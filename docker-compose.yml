@@ -7,13 +7,12 @@ services:
       resources:
         limits:
           memory: 2048M
-    volumes:
-      - ./application.yml:/opt/Lavalink/application.yml # application.yml එක root එකේ තියෙන්න ඕනේ
     ports:
-      - "2333:2333"
+      - "8080:8080"
+    volumes:
+      - ./application.yml:/opt/Lavalink/application.yml
 
   static-site:
     image: nginx:alpine
-    # Ports අයින් කළා මොකද Dokploy Proxy එකත් එක්ක Conflict වෙන නිසා
     volumes:
-      - ./web:/usr/share/nginx/html # 'web' folder එක repository එකේ තියෙන්නම ඕනේ
+      - ./web:/usr/share/nginx/html
