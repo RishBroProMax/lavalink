@@ -1,24 +1,25 @@
+version: '3.8'
+
 services:
   lavalink:
     image: fredboat/lavalink:4.0.8
+    restart: always
     environment:
-      - _JAVA_OPTIONS=-Xmx1600M  # Java එකට 1.6GB වෙන් කරනවා, ඉතුරු ටික container overhead එකට
+      - _JAVA_OPTIONS=-Xmx1600M
     deploy:
       resources:
         limits:
-          memory: 2048M # උඹේ 2GB limit එක මෙතන තියෙනවා
+          memory: 2048M # උඹ ඉල්ලපු 2GB RAM limit එක
+    ports:
+      - "2333:2333"
+    # Configuration file එක volume එකක් විදිහට mount කරන්න
     volumes:
-      - ../files/lavalink/application.yml:/opt/Lavalink/application.yml
-    networks:
-      - dokploy-network
+      - ./application.yml:/opt/Lavalink/application.yml
 
   static-site:
     image: nginx:alpine
+    restart: always
+    ports:
+      - "80:80"
     volumes:
-      - ../files/site-content:/usr/share/nginx/html # උඹේ html files මෙතනට දාපන්
-    networks:
-      - dokploy-network
-
-networks:
-  dokploy-network:
-    external: true
+      - ./web:/usr/share/nginx/html # 'web' folder එකේ site files තියෙන්න ඕනේ
