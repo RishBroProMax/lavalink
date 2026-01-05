@@ -1,23 +1,19 @@
-version: '3.8'
-
 services:
   lavalink:
     image: fredboat/lavalink:4.0.8
-    restart: always
     environment:
       - _JAVA_OPTIONS=-Xmx1600M
     deploy:
       resources:
         limits:
-          memory: 2048M # උඹ ඉල්ලපු 2GB RAM limit එක
+          memory: 2048M
+    volumes:
+      - ./application.yml:/opt/Lavalink/application.yml # application.yml එක root එකේ තියෙන්න ඕනේ
     ports:
       - "2333:2333"
-    # Configuration file එක volume එකක් විදිහට mount කරන්න
-    volumes:
-      - ./application.yml:/opt/Lavalink/application.yml
 
   static-site:
     image: nginx:alpine
-    restart: always
+    # Ports අයින් කළා මොකද Dokploy Proxy එකත් එක්ක Conflict වෙන නිසා
     volumes:
-      - ./web:/usr/share/nginx/html # 'web' folder එකේ site files තියෙන්න ඕනේ
+      - ./web:/usr/share/nginx/html # 'web' folder එක repository එකේ තියෙන්නම ඕනේ
